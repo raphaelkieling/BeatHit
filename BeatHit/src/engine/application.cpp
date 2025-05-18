@@ -1,12 +1,11 @@
 #include <algorithm>
 #include <raylib.h>
-
 #include "application.h"
 
 Application::Application() {
 		currentScene = nullptr;
 
-		InitWindow(800, 600, "BeatHit");
+		InitWindow(1280, 720, "BeatHit");
 		SetTargetFPS(60);
 		debug.Load(this);
 }
