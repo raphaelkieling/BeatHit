@@ -3,53 +3,29 @@
 #include "component.h"
 #include "scene.h"
 
-// TODO: be able to do OnStart/Process/OnEnit on ALL the graph
 void Scene::OnStart() {
-	for (Component* c : this->components)
-	{
-		c->Load();
-	}
+	root->Load();
 }
 
 void Scene::Process()  {
-	for (Component* c : this->components)
-	{
-		c->InternalProcess();
-	}
+	root->InternalProcess(root);
 }
 
 void Scene::OnExit()  {
-	for (Component* c : this->components)
-	{
-		c->Drop();
-	}
-
-	ClearComponents();
+	root->Drop();
+	root->ClearAllChildren();
 }
 
 void Scene::AddComponent(Component* component) {
-	components.push_back(component);
+	root->AddComponent(component);
 }
 
 void Scene::ClearRemoveQueue() {
 	while (!toRemoveIds.empty()) {
-		uint64_t id = toRemoveIds.front(); 
-		toRemoveIds.pop(); 
+		uint64_t id = toRemoveIds.front();
+		toRemoveIds.pop();
 
-		auto it = std::find_if(components.begin(), components.end(),
-			[id](Component* c) { return c->id == id; });
-
-		if (it != components.end()) {
-			delete* it;
-			components.erase(it);
-		}
-	}
-}
-
-void Scene::ClearComponents() {
-	for (auto it = components.begin(); it != components.end(); ) {
-		delete* it;
-		it = components.erase(it);
+		root->RemoveComponentById(id);
 	}
 }
 

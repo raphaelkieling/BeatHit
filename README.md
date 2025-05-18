@@ -7,7 +7,8 @@ A experiment of a game engine from scratch.
 
 ### TODO
 
-- [ ] Quad
+- [x] Quad
+- [x] Initial Component Sync
 - [ ] Animation
 - [ ] Moveable Player (idle, walk, jump)
 - [ ] Camera2D (follow player)

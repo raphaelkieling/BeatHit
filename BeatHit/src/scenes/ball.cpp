@@ -3,23 +3,26 @@
 #include "../engine/component.h"
 #include "../engine/utils.h"
 #include "../engine/sprite.h"
+#include "../engine/application.h"
 #include <string>
 
 class Ball : public Component {
+private:
+    int gravity = 40;
+
 public:
     Ball() {}
 
-    void Load() override {
+    void Load() {
         Sprite* spr = new Sprite("spritesheet-enemies-default.png", 8, 8);
-        spr->setName("MainBallSprite");
+        spr->SetName("MainBallSprite");
         this->AddComponent(spr);
     }
 
     void Process() {
-        localPosition.x += 1;
-
+        localPosition.y += gravity * GetFrameTime();
         DrawCircleV(globalPosition, 2, RED);
     }
 
-    void Drop() override {}
+    void Drop() {}
 };

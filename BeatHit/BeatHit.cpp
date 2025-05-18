@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-	Application app;
+	Application& app = Application::GetInstance();
 	Game game;
 
 	app

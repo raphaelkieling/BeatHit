@@ -65,7 +65,7 @@ void Debug::StartProcess(Application* app) {
     ImGui::Text("FPS: %d", GetFPS());
     ImGui::Text("Delta Time: %f", GetFrameTime());
     ImGui::Text("Scene name: %s", app->currentScene->name.c_str());
-    ImGui::Text("Count root scene: %d", (int)app->currentScene->components.size());
+   /* ImGui::Text("Count root scene: %d", (int)app->currentScene->components.size());
 
     for (int i = 0; i < app->currentScene->components.size(); i++) {
         Component* c = app->currentScene->components[i];
@@ -81,7 +81,7 @@ void Debug::StartProcess(Application* app) {
                 app->currentScene->DropComponentId(c->id);
             }
         }
-    }
+    }*/
 
     ImGui::End();
 }

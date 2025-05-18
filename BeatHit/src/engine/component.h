@@ -18,10 +18,10 @@ public:
 		this->localPosition = Vector2{ 0, 0 };
 	}
 
-	Component* setLocalPosition(Vector2 localPosition);
+	Component* SetLocalPosition(Vector2 localPosition);
 	Component* GetComponentById(uint64_t id);
 	Component* GetComponentByName(const std::string& searchName);
-	Component* setName(const std::string& newName);
+	Component* SetName(const std::string& newName);
 
 	virtual void Load() = 0;
 	virtual void Process() = 0;
@@ -29,5 +29,6 @@ public:
 
 	void AddComponent(Component* c);
 	void InternalProcess(Component* parent);
-	void InternalProcess();
+	void ClearAllChildren();
+	bool RemoveComponentById(uint64_t id);
 };

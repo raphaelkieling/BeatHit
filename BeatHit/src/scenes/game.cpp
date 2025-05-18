@@ -8,7 +8,7 @@ public:
 
     void Load() override {
         Ball* ball = new Ball();
-        ball->setLocalPosition(Vector2{ 100, 100 });
+        ball->SetLocalPosition(Vector2{ 100, 100 });
         this->AddComponent(ball);
     }
 };

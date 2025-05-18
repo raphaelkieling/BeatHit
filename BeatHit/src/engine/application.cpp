@@ -10,6 +10,11 @@ Application::Application() {
 		debug.Load(this);
 }
 
+Application& Application::GetInstance() {
+	static Application instance;
+	return instance;
+}
+
 void Application::Run() {
 		while (!WindowShouldClose()) {
 			if (currentScene) {
@@ -54,4 +59,22 @@ Application* Application::SetScene(std::string sceneName) {
 		}
 
 		return this;
+}
+
+static Component* FindComponentByName(Component* root, const std::string& name) {
+	if (!root) return nullptr;
+	if (root->name == name) return root;
+
+	for (Component* child : root->components) {
+		Component* found = FindComponentByName(child, name);
+		if (found) return found;
+	}
+
+	return nullptr;
+}
+
+Component* Application::GetComponentByName(const std::string& name) {
+	if (!currentScene || !currentScene->root) return nullptr;
+
+	return FindComponentByName(currentScene->root, name);
 }

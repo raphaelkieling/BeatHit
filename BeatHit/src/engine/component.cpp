@@ -1,7 +1,7 @@
 #include "component.h"
 #include <raymath.h>
 
-Component* Component::setLocalPosition(Vector2 localPosition) {
+Component* Component::SetLocalPosition(Vector2 localPosition) {
 	this->localPosition = localPosition;
 	return this;
 }
@@ -13,7 +13,7 @@ void Component::AddComponent(Component* c) {
 	}
 }
 
-Component* Component::setName(const std::string& newName) {
+Component* Component::SetName(const std::string& newName) {
 	this->name = newName;
 	return this;
 }
@@ -51,13 +51,25 @@ Component* Component::GetComponentByName(const std::string& searchName) {
 	return nullptr;
 }
 
-void Component::InternalProcess() {
-	globalPosition = localPosition;
-	this->Process();
-
-	for (Component* c : components) {
-		if (c) {
-			c->InternalProcess(this);
+bool Component::RemoveComponentById(uint64_t id) {
+	for (auto it = components.begin(); it != components.end(); ++it) {
+		if ((*it)->id == id) {
+			delete* it;
+			components.erase(it);
+			return true;
+		}
+		else if ((*it)->RemoveComponentById(id)) {
+			return true;
 		}
 	}
+	return false;
+}
+
+void Component::ClearAllChildren() {
+	for (Component* c : components) {
+		c->Drop();
+		c->ClearAllChildren();
+		delete c;
+	}
+	components.clear();
 }
