@@ -10,6 +10,5 @@ public:
         Ball* ball = new Ball();
         ball->setLocalPosition(Vector2{ 100, 100 });
         this->AddComponent(ball);
-
     }
 };

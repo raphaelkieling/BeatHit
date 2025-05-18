@@ -6,27 +6,20 @@
 #include <string>
 
 class Ball : public Component {
-private:
-    Sprite spr;
-
 public:
-    Ball() {
-        this->spr = Sprite("spritesheet-enemies-default.png", 8, 8);
-    }
+    Ball() {}
 
     void Load() override {
-        spr.Load();
+        Sprite* spr = new Sprite("spritesheet-enemies-default.png", 8, 8);
+        spr->setName("MainBallSprite");
+        this->AddComponent(spr);
     }
 
     void Process() {
         localPosition.x += 1;
 
         DrawCircleV(globalPosition, 2, RED);
-
-        spr.InternalProcess(this);
     }
 
-    void Drop() override {
-        spr.Drop();
-    }
+    void Drop() override {}
 };
