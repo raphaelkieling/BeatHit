@@ -21,18 +21,43 @@ public:
 		rlImGuiSetup(true);
 	}
 
+	void DebugScene() {
+		if (currentScene) {
+			ImGui::Text("Scene name: %s", currentScene->name.c_str());
+			ImGui::Text("Count root scene: %d", currentScene->components.size());
+
+			if (ImGui::Button("Restart scene")) {
+				currentScene->OnExit();
+				currentScene->Load();
+			}
+
+			for (int i = 0; i < currentScene->components.size(); i++) {
+				if (ImGui::CollapsingHeader("Entity")) {
+					ImGui::Text("Id: %d", currentScene->components[i]->id);
+
+					if (ImGui::Button("Drop")) {
+						currentScene->DropComponentId(currentScene->components[i]->id);
+					}
+				}
+			}
+		}
+	}
+
 	void Run() {
 		while (!WindowShouldClose()) {
+			if (currentScene) {
+				currentScene->ClearRemoveQueue();
+			}
+
 			BeginDrawing();
 			ClearBackground(RAYWHITE);
 			rlImGuiBegin();
 
+			DebugScene();
+
 			if (currentScene) {
-				DrawText(string("Welcome to BeatHit! " + currentScene->name).c_str(), 25, 25, 16, LIGHTGRAY);
 				currentScene->Process();
 			}
-
-			ImGui::Text("Hello, world %d", 123);
 
 			rlImGuiEnd();
 			EndDrawing();

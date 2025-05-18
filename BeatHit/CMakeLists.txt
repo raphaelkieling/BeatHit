@@ -4,7 +4,7 @@
 
 # Gera todos os arquivos .cpp e .h recursivamente
 file(GLOB_RECURSE BEATHIT_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-add_executable(BeatHit BeatHit.cpp "GameScene.cpp" "Kieling/scene.h")
+add_executable(BeatHit BeatHit.cpp "GameScene.cpp" "Kieling/scene.h" "Kieling/utils.cpp" "Kieling/utils.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET BeatHit PROPERTY CXX_STANDARD 20)

@@ -1,33 +1,33 @@
 #include "Kieling/scene.h"
 #include "Kieling/component.h"
 #include <raylib.h>
+#include "imgui.h"
 
 class Ball : public Component {
 private:
     Vector2 pos;
 public:
     void Load() override {
-        printf("---- BALL\n");
-        pos.x = 100;
+        pos.x = 200;
         pos.y = 150;
     }
 
     void Process() override {
-        printf("---- BALL PROCESS\n");
-        pos.x += 5;
+        pos.y += 1;
+
         DrawCircleV(pos, 20, RED);
     }
 
-    void Drop() override {
-        printf("---- BALL DROP\n");
-    }
+    void Drop() override {}
 };
 
 class Game : public Scene {
 public:
-	Game() : Scene("Game") {
+	Game() : Scene("Game") {}
+
+    void Load() override {
         Ball* ball = new Ball();
 
-		this->AddComponent(ball);
-	}
+        this->AddComponent(ball);
+    }
 };
