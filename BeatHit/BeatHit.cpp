@@ -2,11 +2,32 @@
 //
 
 #include "BeatHit.h"
+#include "Kieling/application.cpp"
 
 using namespace std;
+using namespace Kieling;
+
+class Menu : public Scene {
+public:
+	Menu() : Scene("Menu"){}
+};
+
+class Game : public Scene {
+public:
+	Game() : Scene("Game") {}
+};
 
 int main()
 {
-	cout << "Hello CMake." << endl;
+	Application app;
+	Menu menu;
+	Game game;
+
+	app
+		.AddScene(&menu)
+		->AddScene(&game)
+		->SetScene(menu.name)
+		->Run();
+
 	return 0;
 }

@@ -2,11 +2,38 @@
 # project specific logic here.
 #
 
-# Add source to this project's executable.
-add_executable (BeatHit "BeatHit.cpp" "BeatHit.h")
+# Gera todos os arquivos .cpp e .h recursivamente
+file(GLOB_RECURSE BEATHIT_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+add_executable(BeatHit BeatHit.cpp)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET BeatHit PROPERTY CXX_STANDARD 20)
 endif()
 
-# TODO: Add tests and install targets if needed.
+cmake_minimum_required(VERSION 3.14)
+project(BeatHit)
+
+# Install stuff
+
+include(FetchContent)
+
+# Raylib
+FetchContent_Declare(
+    raylib
+    GIT_REPOSITORY https://github.com/raysan5/raylib.git
+    GIT_TAG master
+)
+FetchContent_MakeAvailable(raylib)
+
+message(STATUS "Incluindo apenas rlImGui.cpp do projeto externo")
+
+# rlImGui (já inclui ImGui internamente)
+FetchContent_Declare(
+    rlImGui
+    GIT_REPOSITORY https://github.com/SafenM/rlImGui-CMake
+    GIT_TAG main
+)
+FetchContent_MakeAvailable(rlImGui)
+
+# Linka Raylib e rlImGui ao seu executável
+target_link_libraries(BeatHit PRIVATE raylib rlImGui)
