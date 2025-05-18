@@ -3,6 +3,7 @@
 #include "component.h"
 #include "scene.h"
 
+// TODO: be able to do OnStart/Process/OnEnit on ALL the graph
 void Scene::OnStart() {
 	for (Component* c : this->components)
 	{
@@ -13,7 +14,7 @@ void Scene::OnStart() {
 void Scene::Process()  {
 	for (Component* c : this->components)
 	{
-		c->Process();
+		c->InternalProcess();
 	}
 }
 

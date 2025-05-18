@@ -1,6 +1,6 @@
 ﻿#include "BeatHit.h"
-#include "Kieling/application.h"
-#include "GameScene.cpp"
+#include "src/engine/application.h"
+#include "src/scenes/game.cpp"
 
 using namespace std;
 

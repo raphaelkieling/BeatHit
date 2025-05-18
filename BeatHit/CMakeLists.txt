@@ -4,6 +4,10 @@
 
 # Gera todos os arquivos .cpp e .h recursivamente
 file(GLOB_RECURSE BEATHIT_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+
+#Copy all assets
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/src/assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 add_executable(BeatHit ${BEATHIT_SOURCES})
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

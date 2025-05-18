@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <raylib.h>
-#include "rlImGui.h"
-#include "imgui.h"
+
 #include "application.h"
 
 Application::Application() {
@@ -9,7 +8,7 @@ Application::Application() {
 
 		InitWindow(800, 600, "BeatHit");
 		SetTargetFPS(60);
-		rlImGuiSetup(true);
+		debug.Load(this);
 }
 
 void Application::Run() {
@@ -20,15 +19,14 @@ void Application::Run() {
 
 			BeginDrawing();
 			ClearBackground(RAYWHITE);
-			rlImGuiBegin();
-
-			debug.Process(this);
+			
+			debug.StartProcess(this);
 
 			if (currentScene) {
 				currentScene->Process();
 			}
 
-			rlImGuiEnd();
+			debug.EndProcess(this);
 			EndDrawing();
 		}
 }
