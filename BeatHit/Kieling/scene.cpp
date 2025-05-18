@@ -1,27 +1,23 @@
 #include <vector>
 #include <string>
-#include "scene.h"
 #include "component.h"
+#include "scene.h"
 
-using namespace std;
-
-void Scene::Load() {
-	printf(string("Loading scene: " + name).c_str());
-
-	for(Component* c: this->components)
+void Scene::OnStart() {
+	for (Component* c : this->components)
 	{
 		c->Load();
 	}
 }
 
-void Scene::Process() {
+void Scene::Process()  {
 	for (Component* c : this->components)
 	{
 		c->Process();
 	}
 }
 
-void Scene::OnExit() {
+void Scene::OnExit()  {
 	for (Component* c : this->components)
 	{
 		c->Drop();
@@ -49,7 +45,7 @@ void Scene::ClearRemoveQueue() {
 	}
 }
 
-void Scene::ClearComponents() {	
+void Scene::ClearComponents() {
 	for (auto it = components.begin(); it != components.end(); ) {
 		delete* it;
 		it = components.erase(it);

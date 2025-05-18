@@ -1,49 +1,18 @@
-#include <raylib.h>
-#include "scene.cpp"
-#include <vector>
 #include <algorithm>
+#include <raylib.h>
 #include "rlImGui.h"
 #include "imgui.h"
+#include "application.h"
 
-using namespace std;
-
-class Application {
-private:
-	vector<Scene*> scenes;
-	Scene* currentScene;
-
-public:
-	Application() {
+Application::Application() {
 		currentScene = nullptr;
 
 		InitWindow(800, 600, "BeatHit");
 		SetTargetFPS(60);
 		rlImGuiSetup(true);
-	}
+}
 
-	void DebugScene() {
-		if (currentScene) {
-			ImGui::Text("Scene name: %s", currentScene->name.c_str());
-			ImGui::Text("Count root scene: %d", currentScene->components.size());
-
-			if (ImGui::Button("Restart scene")) {
-				currentScene->OnExit();
-				currentScene->Load();
-			}
-
-			for (int i = 0; i < currentScene->components.size(); i++) {
-				if (ImGui::CollapsingHeader("Entity")) {
-					ImGui::Text("Id: %d", currentScene->components[i]->id);
-
-					if (ImGui::Button("Drop")) {
-						currentScene->DropComponentId(currentScene->components[i]->id);
-					}
-				}
-			}
-		}
-	}
-
-	void Run() {
+void Application::Run() {
 		while (!WindowShouldClose()) {
 			if (currentScene) {
 				currentScene->ClearRemoveQueue();
@@ -53,7 +22,7 @@ public:
 			ClearBackground(RAYWHITE);
 			rlImGuiBegin();
 
-			DebugScene();
+			debug.Process(this);
 
 			if (currentScene) {
 				currentScene->Process();
@@ -62,14 +31,14 @@ public:
 			rlImGuiEnd();
 			EndDrawing();
 		}
-	}
+}
 
-	Application* AddScene(Scene* scene) {
+Application* Application::AddScene(Scene* scene) {
 		scenes.push_back(scene);
 		return this;
-	}
+}
 
-	Application* SetScene(string sceneName) {
+Application* Application::SetScene(std::string sceneName) {
 		if (currentScene) {
 			currentScene->OnExit();
 		}
@@ -81,16 +50,11 @@ public:
 		if (it != scenes.end()) {
 			currentScene = *it;
 			currentScene->Load();
+			currentScene->OnStart();
 		}
 		else {
 			printf("Scene does't exists");
 		}
 
 		return this;
-	}
-
-	~Application() {
-		rlImGuiShutdown();
-		CloseWindow();
-	}
-};
+}

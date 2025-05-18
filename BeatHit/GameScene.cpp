@@ -8,8 +8,7 @@ private:
     Vector2 pos;
 public:
     void Load() override {
-        pos.x = 200;
-        pos.y = 150;
+        pos = { 200, 150 };
     }
 
     void Process() override {

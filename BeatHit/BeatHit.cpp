@@ -1,5 +1,5 @@
 ﻿#include "BeatHit.h"
-#include "Kieling/application.cpp"
+#include "Kieling/application.h"
 #include "GameScene.cpp"
 
 using namespace std;

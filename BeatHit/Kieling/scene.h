@@ -14,11 +14,13 @@ public:
 		this->name = name;
 	}
 
-	virtual void Load();
-	virtual void Process();
+	virtual void Load() = 0;
 	virtual void AddComponent(Component* component);
 	virtual void DropComponentId(uint64_t id);
 	virtual void ClearRemoveQueue();
 	virtual void ClearComponents();
+
+	virtual void OnStart();
+	virtual void Process();
 	virtual void OnExit();
 };
