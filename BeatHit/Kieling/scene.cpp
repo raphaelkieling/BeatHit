@@ -1,21 +1,33 @@
-#include "component.cpp"
 #include <vector>
 #include <string>
+#include "scene.h"
+#include "component.h"
 
 using namespace std;
 
-namespace Kieling {
-	class Scene {
-	public:
-		vector<Component*> components;
-		string name;
+void Scene::Load() {
+	printf(string("Loading scene: " + name).c_str());
 
-		Scene(string name) {
-			this->name = name;
-		}
+	for(Component* c: this->components)
+	{
+		c->Load();
+	}
+}
 
-		void Load() {
-			printf(string("Loading scene: " + name).c_str());
-		}
-	};
+void Scene::Process() {
+	for (Component* c : this->components)
+	{
+		c->Process();
+	}
+}
+
+void Scene::OnExit() {
+	for (Component* c : this->components)
+	{
+		c->Drop();
+	}
+}
+
+void Scene::AddComponent(Component* component) {
+	components.push_back(component);
 }
