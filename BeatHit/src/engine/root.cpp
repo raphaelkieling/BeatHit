@@ -2,4 +2,5 @@
 
 void Root::Load() {}
 void Root::Process() {}
+void Root::Draw() {}
 void Root::Drop() {}

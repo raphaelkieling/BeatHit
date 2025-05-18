@@ -23,5 +23,6 @@ public:
 
 	virtual void OnStart();
 	virtual void Process();
+	virtual void Draw();
 	virtual void OnExit();
 };

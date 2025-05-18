@@ -11,6 +11,10 @@ void Scene::Process()  {
 	root->InternalProcess(root);
 }
 
+void Scene::Draw() {
+	root->InternalDraw(root);
+}
+
 void Scene::OnExit()  {
 	root->Drop();
 	root->ClearAllChildren();

@@ -25,10 +25,12 @@ public:
 
 	virtual void Load() = 0;
 	virtual void Process() = 0;
+	virtual void Draw() = 0;
 	virtual void Drop() = 0;
 
 	void AddComponent(Component* c);
 	void InternalProcess(Component* parent);
+	void InternalDraw(Component* parent);
 	void ClearAllChildren();
 	bool RemoveComponentById(uint64_t id);
 };

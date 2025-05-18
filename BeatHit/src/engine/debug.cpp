@@ -1,6 +1,7 @@
 #include "imgui.h"
 #include "application.h"
 #include "debug.h"
+#include "sprite.h"
 #include <raylib.h>
 #include <string>
 #include "rlImGui.h"
@@ -16,37 +17,6 @@ void Debug::StartProcess(Application* app) {
     if (!app->currentScene) {
         return;
     }
-
-    //ImGuiViewport* viewport = ImGui::GetMainViewport();
-    //ImGui::SetNextWindowPos(viewport->Pos);
-    //ImGui::SetNextWindowSize(viewport->Size);
-    //ImGui::SetNextWindowViewport(viewport->ID);
-
-    //ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar |
-    //    ImGuiWindowFlags_NoCollapse |
-    //    ImGuiWindowFlags_NoResize |
-    //    ImGuiWindowFlags_NoMove |
-    //    ImGuiWindowFlags_NoBringToFrontOnFocus |
-    //    ImGuiWindowFlags_NoNavFocus |
-    //    ImGuiWindowFlags_NoBackground;
-
-    //// Estilo da janela fullscreen dockspace
-    //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-    //ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-    //ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-    //ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0));
-
-    //ImGui::Begin("DockSpace Window", nullptr, window_flags);
-
-    //ImGui::PopStyleColor();
-    //ImGui::PopStyleVar(3);
-
-    //ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-    //ImGui::DockSpace(dockspace_id, ImVec2(0, 0), ImGuiDockNodeFlags_PassthruCentralNode);
-    //ImGui::End();
-
-    //// Janela Debug Info, flutuante e movível, sem dock automático
-    //ImGuiWindowFlags debugFlags = ImGuiWindowFlags_NoDocking; // Não pode ser dockada
 
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("Game")) {
@@ -65,27 +35,47 @@ void Debug::StartProcess(Application* app) {
     ImGui::Text("FPS: %d", GetFPS());
     ImGui::Text("Delta Time: %f", GetFrameTime());
     ImGui::Text("Scene name: %s", app->currentScene->name.c_str());
-   /* ImGui::Text("Count root scene: %d", (int)app->currentScene->components.size());
+    ImGui::Checkbox("Debug", &app->useDebug);
+    ImGui::Checkbox("Pause Process", &app->pauseProcess);
 
-    for (int i = 0; i < app->currentScene->components.size(); i++) {
-        Component* c = app->currentScene->components[i];
+    ImGui::Separator();
 
-        std::string headerStr = "Entity: " + std::to_string(c->id);
-        const char* header = headerStr.c_str();
-
-        if (ImGui::CollapsingHeader(header)) {
-            ImGui::Text("Id: %d", c->id);
-            ImGui::Text("Local position: %d - %d", c->localPosition.x, c->localPosition.y);
-
-            if (ImGui::Button("Drop")) {
-                app->currentScene->DropComponentId(c->id);
-            }
-        }
-    }*/
-
+    if (ImGui::CollapsingHeader("Component Tree")) {
+        RenderComponentTree(app->currentScene->root);
+    }
+    
     ImGui::End();
 }
 
+void Debug::RenderComponentTree(Component* component) {
+    std::string nodeLabel = component->name + "##" + std::to_string(component->id);
+
+    if (ImGui::TreeNode(nodeLabel.c_str())) {
+        ImGui::Text("Id: %llu", component->id);
+        ImGui::Text("Name: %s", component->name.c_str());
+        ImGui::Text("Local position: %d - %d", (int)component->localPosition.x, (int)component->localPosition.y);
+
+        if (Sprite* sprite = dynamic_cast<Sprite*>(component)) {
+            ImGui::Text("Sprite path: %s", sprite->path);
+            ImGui::SliderFloat("Cell X", &sprite->cellX, 0.0f, 20.0f);
+            ImGui::SliderFloat("Cell Y", &sprite->cellY, 0.0f, 20.0f);
+
+            ImGui::SliderFloat("Atlax X", &sprite->atlas.x, 0.0f, 20.0f);
+            ImGui::SliderFloat("Atlax Y", &sprite->atlas.y, 0.0f, 20.0f);
+            ImGui::Text("Texture Size: %d / %d", &sprite->texture.width, &sprite->texture.height);
+        }
+
+        if (ImGui::Button(("Drop##" + std::to_string(component->id)).c_str())) {
+            Application::GetInstance().currentScene->DropComponentId(component->id);
+        }
+
+        for (Component* child : component->components) {
+            RenderComponentTree(child);
+        }
+
+        ImGui::TreePop();
+    }
+}
 
 void Debug::Load(Application* app) {
     rlImGuiSetup(true);

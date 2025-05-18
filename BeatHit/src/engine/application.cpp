@@ -27,7 +27,11 @@ void Application::Run() {
 			debug.StartProcess(this);
 
 			if (currentScene) {
-				currentScene->Process();
+				if (!pauseProcess) {
+					currentScene->Process();
+				}
+
+				currentScene->Draw();
 			}
 
 			debug.EndProcess(this);

@@ -16,6 +16,9 @@ public:
     Scene* currentScene;
     Debug debug;
 
+    bool useDebug = true;
+    bool pauseProcess = false;
+
     static Application& GetInstance();
 
     Component* GetComponentByName(const std::string& name);

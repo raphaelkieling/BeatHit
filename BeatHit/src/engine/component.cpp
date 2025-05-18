@@ -27,6 +27,21 @@ void Component::InternalProcess(Component* parent) {
 	}
 }
 
+void Component::InternalDraw(Component* parent) {
+	this->Draw();
+
+	for (Component* c : components) {
+		c->InternalDraw(this);
+	}
+}
+
+
+void Component::Draw() {
+	for (Component* c : components) {
+		c->Draw();
+	}
+}
+
 Component* Component::GetComponentById(uint64_t searchId) {
 	if (this->id == searchId) return this;
 
