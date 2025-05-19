@@ -28,10 +28,10 @@ void Application::Run() {
 
 			if (currentScene) {
 				if (!pauseProcess) {
-					currentScene->Process();
+					currentScene->InternalProcess();
 				}
 
-				currentScene->Draw();
+				currentScene->InternalDraw();
 			}
 
 			debug.EndProcess(this);

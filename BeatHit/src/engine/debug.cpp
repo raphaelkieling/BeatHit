@@ -33,7 +33,7 @@ void Debug::StartProcess(Application* app) {
     ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiCond_Once);
     ImGui::Begin("Debug Info");
     ImGui::Text("FPS: %d", GetFPS());
-    ImGui::Text("Delta Time: %f", GetFrameTime());
+    ImGui::Text("Frame Time: %f", GetFrameTime());
     ImGui::Text("Scene name: %s", app->currentScene->name.c_str());
     ImGui::Checkbox("Debug", &app->useDebug);
     ImGui::Checkbox("Pause Process", &app->pauseProcess);
