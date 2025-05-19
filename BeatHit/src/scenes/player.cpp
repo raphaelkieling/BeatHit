@@ -12,54 +12,58 @@
 class IdleState : public State
 {
 public:
-    AnimationPlayer *anim;
-    Component* player;
-    StateMachine *machine;
+    AnimationPlayer* anim;
+    PhysicsComponent* player;
+    StateMachine* machine;
 
-    IdleState(AnimationPlayer* a, Component* p, StateMachine* s) : anim(a), player(p), machine(s) {}
+    IdleState(AnimationPlayer* a, PhysicsComponent* p, StateMachine* s) : anim(a), player(p), machine(s) {}
 
     void OnEnter() override
     {
         anim->SetCurrentAnimation("idle");
-        printf("Entrou no Idle\n");
     }
     void OnUpdate() override
     {
-        if (IsKeyDown(KEY_D))
+        if (IsKeyDown(KEY_D) or IsKeyDown(KEY_A))
         {
-            printf("INDO PRO RUN!");
-            machine->SetCurrent("run");
+            machine->SetCurrent("move");
         }
     }
-    void OnExit() override { printf("Saiu do Idle\n"); }
-    void OnDraw() override { /* draw idle */ }
+    void OnExit() override {}
+    void OnDraw() override {}
 };
 
 class MoveState : public State
 {
 public:
-    AnimationPlayer *anim;
-    Component *player;
-    StateMachine *machine;
+    AnimationPlayer* anim;
+    PhysicsComponent* player;
+    StateMachine* machine;
 
-    MoveState(AnimationPlayer* a, Component* p, StateMachine* s) : anim(a), player(p), machine(s) {}
+    MoveState(AnimationPlayer* a, PhysicsComponent* p, StateMachine* s) : anim(a), player(p), machine(s) {}
 
     void OnEnter() override
     {
         anim->SetCurrentAnimation("run");
-        printf("Entrou no Move\n");
     }
     void OnUpdate() override
     {
         if (IsKeyDown(KEY_D))
         {
-            player->globalPosition.x += 5;
-        }else {
+			player->direction = Vector2{ 1, 0 };
+        }
+        else if (IsKeyDown(KEY_A)) {
+            player->direction = Vector2{ -1, 0 };
+        }
+        else {
+            player->direction = Vector2{ 0, 0 };
             machine->SetCurrent("idle");
         }
+
+        player->localPosition.x += player->direction.x * 10;
     }
-    void OnExit() override { printf("Saiu do Move\n"); }
-    void OnDraw() override { /* draw move */ }
+    void OnExit() override {}
+    void OnDraw() override {}
 };
 
 class Player : public PhysicsComponent

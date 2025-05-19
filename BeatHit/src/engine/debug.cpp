@@ -83,6 +83,10 @@ void Debug::RenderComponentTree(Component* component) {
 
         if (StateMachine* machine = dynamic_cast<StateMachine*>(component)) {
             ImGui::Text("Current State: %s", machine->currentStateName.c_str());
+
+            for (const auto& [key, state] : machine->states) {
+                ImGui::BulletText(key.c_str());
+            }
         }
 
         if (ImGui::Button(("Drop##" + std::to_string(component->id)).c_str())) {

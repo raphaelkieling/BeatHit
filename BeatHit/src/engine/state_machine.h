@@ -6,11 +6,11 @@
 
 class StateMachine : public Component {
 private:
-    std::unordered_map<std::string, State*> states;
     State* currentState = nullptr;
 
 public:
     std::string currentStateName;
+    std::unordered_map<std::string, State*> states;
 
     StateMachine* AddState(const std::string& name, State* state) {
         states[name] = state;
