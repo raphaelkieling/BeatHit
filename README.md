@@ -14,6 +14,6 @@ A experiment of a game engine from scratch.
 - [x] Initial Debug Panels
 - [ ] Animation
 - [ ] Moveable Player (idle, walk, jump)
-- [ ] Camera2D (follow player)
+- [x] Camera2D (follow player)
 - [ ] Tileset Import
 - [ ] Editor state extraction (and load)

@@ -35,7 +35,6 @@ void Component::InternalDraw(Component* parent) {
 	}
 }
 
-
 void Component::Draw() {
 	for (Component* c : components) {
 		c->Draw();

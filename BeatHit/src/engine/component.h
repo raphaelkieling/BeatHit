@@ -32,5 +32,6 @@ public:
 	void InternalProcess(Component* parent);
 	void InternalDraw(Component* parent);
 	void ClearAllChildren();
+
 	bool RemoveComponentById(uint64_t id);
 };

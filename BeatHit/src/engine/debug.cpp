@@ -2,7 +2,8 @@
 #include "application.h"
 #include "debug.h"
 #include "sprite.h"
-#include "physicsComponent.h"
+#include "physics_component.h"
+#include "animation_player.h"
 #include <raylib.h>
 #include <string>
 #include "rlImGui.h"
@@ -71,8 +72,12 @@ void Debug::RenderComponentTree(Component* component) {
             ImGui::Text("Texture Size: %d / %d", &sprite->texture.width, &sprite->texture.height);
         }
 
-        if (PhysicsComponent* sprite = dynamic_cast<PhysicsComponent*>(component)) {
-            ImGui::SliderFloat("Mass", &sprite->mass, 0.0f, 20.0f);
+        if (PhysicsComponent* physic= dynamic_cast<PhysicsComponent*>(component)) {
+            ImGui::SliderFloat("Mass", &physic->mass, 0.0f, 20.0f);
+        }
+        
+        if (AnimationPlayer* player = dynamic_cast<AnimationPlayer*>(component)) {
+            ImGui::SliderInt("Index", &player->currentFrame, 0, player->frames.size() - 1);
         }
 
         if (ImGui::Button(("Drop##" + std::to_string(component->id)).c_str())) {
