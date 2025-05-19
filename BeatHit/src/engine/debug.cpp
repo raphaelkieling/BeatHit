@@ -3,6 +3,7 @@
 #include "debug.h"
 #include "sprite.h"
 #include "physics_component.h"
+#include "state_machine.h"
 #include "animation_player.h"
 #include <raylib.h>
 #include <string>
@@ -77,7 +78,11 @@ void Debug::RenderComponentTree(Component* component) {
         }
         
         if (AnimationPlayer* player = dynamic_cast<AnimationPlayer*>(component)) {
-            ImGui::SliderInt("Index", &player->currentFrame, 0, player->frames.size() - 1);
+            ImGui::SliderInt("Index", &player->currentFrame, 0, player->currentAnimation->frames.size() - 1);
+        }
+
+        if (StateMachine* machine = dynamic_cast<StateMachine*>(component)) {
+            ImGui::Text("Current State: %s", machine->currentStateName.c_str());
         }
 
         if (ImGui::Button(("Drop##" + std::to_string(component->id)).c_str())) {
