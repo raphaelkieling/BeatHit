@@ -3,25 +3,18 @@
 #include "../engine/component.h"
 #include "../engine/utils.h"
 #include "../engine/sprite.h"
+#include "../engine/physicsComponent.h"
 #include <string>
 
-class Ball : public Component {
-private:
-    int gravity = 40;
-    float acceleration = 1.4f;
-
+class Player: public PhysicsComponent {
 public:
-    Ball() {}
-
     void Load() {
-        Sprite* spr = new Sprite("spritesheet-enemies-default.png", 8, 8);
+        this->mass = 10.0f;
+
+        Sprite* spr = new Sprite("spritesheet-characters-default.png", 8, 8);
         spr->SetAtlas(Vector2{ 1,1 });
         spr->SetName("MainBallSprite");
         this->AddComponent(spr);
-    }
-
-    void Process() {
-        localPosition.y += (gravity * acceleration) * GetFrameTime();
     }
 
     void Drop() {}

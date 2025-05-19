@@ -1,3 +1,4 @@
+#pragma once
 #include "../engine/component.h"
 
 class Root : public Component {

@@ -1,4 +1,5 @@
 #include "ball.cpp"
+#include "player.cpp"
 #include "../engine/scene.h"
 #include "../engine/component.h"
 #include "../engine/application.h"
@@ -13,6 +14,10 @@ public:
         ball->SetName("ball")->SetLocalPosition(Vector2{100, 100});
         this->AddComponent(ball);
 
+        Player* player = new Player();
+        player->SetName("player")->SetLocalPosition(Vector2{300, 300 });
+        this->AddComponent(player);
+
         Sprite* mouse = new Sprite("spritesheet-characters-default.png", 8, 8);
         mouse->SetAtlas(Vector2{2,2});
         mouse->SetName("mouse")->SetLocalPosition(Vector2{50, 50});
@@ -25,31 +30,15 @@ public:
         activeCamera->offset = Vector2{ GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
         activeCamera->target = Vector2{ 0.0f, 0.0f };
         activeCamera->rotation = 0.0f;
-        activeCamera->zoom = 1.5f;
+        activeCamera->zoom = 0.6f;
     }
 
     void Process() override {
-        Component* c1 = Application::GetInstance().GetComponentByName("ball");
-        Component* c2 = Application::GetInstance().GetComponentByName("mouse");
-
-        if (c1 && c2) {
-            Vector2 mouseScreen = GetMousePosition();
-            Vector2 mouseWorld = GetScreenToWorld2D(mouseScreen, *activeCamera);
-
-
-            activeCamera->target.x = Lerp(activeCamera->target.x, c1->globalPosition.x, 0.01);
-            activeCamera->target.y = Lerp(activeCamera->target.y, c1->globalPosition.y, 0.01);
-
-            c2->localPosition = mouseWorld;
+        Component* p = Application::GetInstance().GetComponentByName("player");
+        if (p) {
+            activeCamera->target = p->globalPosition;
         }
     }
 
-    void Draw() override {
-        Component* c1 = Application::GetInstance().GetComponentByName("ball");
-        Component* c2 = Application::GetInstance().GetComponentByName("mouse");
-
-        if (c1 && c2) {
-            DrawLine(c1->localPosition.x, c1->globalPosition.y, c2->localPosition.x, c2->localPosition.y, PURPLE);
-        }
-    }
+    void Draw() override { }
 };
